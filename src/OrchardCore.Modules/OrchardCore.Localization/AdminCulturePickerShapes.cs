@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Admin;
 using OrchardCore.DisplayManagement;
 using OrchardCore.DisplayManagement.Descriptors;
+using OrchardCore.DisplayManagement.Shapes;
 using OrchardCore.DisplayManagement.Zones;
 using OrchardCore.Modules;
 
@@ -24,10 +25,13 @@ namespace OrchardCore.Localization
                             return;
                         }
 
-                        var shapeFactory = context.ServiceProvider.GetRequiredService<IShapeFactory>();
-                        var culturePickerShape = await shapeFactory.CreateAsync("AdminCulturePicker");
-
-                        await layout.Zones["NavbarTop"].AddAsync(culturePickerShape);
+                        var navBarTop = layout.Zones["NavbarTop"];
+                        if (navBarTop is Shape navBarTopShape)
+                        {
+                            var shapeFactory = context.ServiceProvider.GetRequiredService<IShapeFactory>();
+                            var culturePickerShape = await shapeFactory.CreateAsync("AdminCulturePicker");
+                            await navBarTopShape.AddAsync(culturePickerShape);
+                        }
                     }
                 });
         }
