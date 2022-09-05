@@ -79,7 +79,7 @@ namespace OrchardCore.Media.Services
 
             // When multiple requests occur for the same file we use a Lazy<Task>
             // to initialize the file store request once.
-            await Workers.GetOrAdd(subPathValue, x => new Lazy<Task>(async () =>
+            await Workers.GetOrAdd(subPathValue, subPathValue => new Lazy<Task>(async () =>
             {
                 try
                 {
